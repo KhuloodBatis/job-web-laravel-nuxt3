@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   ],
   modules: [
     "nuxt-auth-sanctum",
-    "@nuxtjs/apollo"
+    "@nuxtjs/apollo",
   ],
 
   apollo: {

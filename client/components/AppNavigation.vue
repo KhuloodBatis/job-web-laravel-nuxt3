@@ -23,6 +23,7 @@ const logout = async () => {
 
             <NuxtLink to="/" exact-active-class="text-blue-500">Jobs </NuxtLink>
             <NuxtLink to="/dashboard" exact-active-class="text-blue-500"> Dashboard</NuxtLink>
+            <nuxt-link :to="{name: 'jobs-create'}" class="mx-4" exact-active-class="text-blue-500">Post a job</nuxt-link>
 
         </div>
 
@@ -32,10 +33,10 @@ const logout = async () => {
             <NuxtLink to="/auth/login" exact-active-class="text-blue-500" >Sign in</NuxtLink>
 
             <NuxtLink to="/auth/register" exact-active-class="text-blue-500">Create an account</NuxtLink>
-
-            <nuxt-link :to="{name: 'jobs-create'}" class="mx-4" exact-active-class="text-blue-500">Post a job</nuxt-link>
-
+   
         </div>
+
+    
 
 
 
@@ -50,5 +51,6 @@ const logout = async () => {
 
            
         </div>
+
     </div>
 </template>
