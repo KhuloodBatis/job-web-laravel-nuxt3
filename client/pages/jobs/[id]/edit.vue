@@ -2,7 +2,7 @@
 
 <div>
     <form @submit.prevent="submit" class="w-6/12" v-if="me">
-       
+       {{ me.jobs[0] }}
        <div class="mb-4">
                <h2 class="mb-4 text-2xl font-blod">Listing Details </h2>
                <div>
@@ -15,7 +15,7 @@
                            name="job_title" id="job_title" 
                            class="bg-gray-200 border-2 border-gray-200 rounded-lg w-full h-10  px-4 "
                            v-model="me.jobs[0].job_title"
-                           :class="{ 'border-red-500': errors['input.job_title'] }">
+                           :class="{ 'border-red-500': errors['input.job_title'] }"></input>
                            
                        <div class="text-sm text-red-500 mt-1" v-if="errors['input.job_title']">
                            {{ errors['input.job_title'][0] }}
@@ -60,7 +60,7 @@
        
 
                <div>
-                   <!-- {{ tags }} -->
+               
                    <label for="tags" class="inline-block mb-1 font-medium">Tags</label>
                
                    <div>   
@@ -77,7 +77,8 @@
                     placeholder="Select tags"
                     class="border-2 border-gray-200 rounded-lg"
                     :class="{ 'border-red-500': errors['input.tags.connect'] }"
-                    ></multiselect>
+                    >
+                </multiselect>
 
                     <div class="text-sm text-red-500 mt-1" v-if="errors['input.tags.connect']">
                            {{ errors['input.tags.connect'][0] }}
@@ -142,7 +143,7 @@
  
 
      <button type="submit" class="p-2 bg-blue-500 text-white font-medium rounded-lg mt-3">
-       Submit
+        Edit listing
      </button>
    </form>
    
@@ -155,30 +156,57 @@
 import USER_JOB_BY_ID from '@/graphql/UserJobById.gql'
 import ALL_TAGS from '@/graphql/AllTags.gql'
 import Multiselect from 'vue-multiselect'
+import UPDATE_JOB from '@/graphql/UpdateJob.gql'
+
 
 export default{
 
     data () {
       return {
-        errors: {}
+        errors: {},
       }
     },
-
-
+    computed: {
+        tagsIds(){
+            return this.me.jobs[0].tags.map(tag => tag.id)
+        }
+    },
     apollo:{
         me: {
             prefetch:false,
             query:USER_JOB_BY_ID,
             variables(){
                  return {
-                    id: this.$route.params.id
+                    id: this.$route.params.id,
                  }
-            }
+            },
+
+
         },
         tags:{
             query:ALL_TAGS
         }
-    }
+    },
+  
+ 
+    components: {
+        Multiselect
+    },
+
+    methods:{
+        submit(){
+           this.$apollo.mutate({
+            mutation: UPDATE_JOB ,
+            variables: { ...this.me.jobs[0], tags: this.tagsIds }
+        }).then(() => {
+          this.$router.replace({ name: 'user-listings' })
+        }).catch((e) => {
+          this.errors = e.graphQLErrors[0].extensions.validation
+        })
+        } 
+    },
+
+ 
 }
 
 </script>

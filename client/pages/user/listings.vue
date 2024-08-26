@@ -10,7 +10,7 @@
         
        <Job v-for="job in me.jobs" :key="job.id" :job="job">
         <template #action>
-          <nuxt-link :to="{ name: 'jobs-id-edit', params: { id: job.id } }"  class="font-medium text-blue-200">
+          <nuxt-link :to="{ name: 'jobs-id-edit', params: { id: job.id } }"  class="font-medium text-blue-500">
             Edit
           </nuxt-link>
           
